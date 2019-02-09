@@ -1,3 +1,105 @@
+
+
+Get the code:
+
+```
+        # original at git clone https://github.com/noussquid/ImageCaptioning.pytorch.git
+        # my fork for which these evaluation instructions work
+        $ git clone https://github.com/noussquid/ImageCaptioning.pytorch.git
+```
+
+Create a virtual environment and install dependencies:
+```
+        # create virtual env
+        $ cd ImageCaptioning.pytorch.git
+        $ virtualenv -p /usr/bin/python2.7 venv2.7
+
+        # activate virtual env
+        $ source venv2.7/bin/activate
+
+        $ pip install torch==0.4.1 \
+          numpy==1.16.1 \
+          six==1.12.0 \
+          h5py==2.9.0 \
+          scikit-image==0.14.2 \
+          PyWavelets==1.0.1 \
+          backports.functools-lru-cache==1.5 \
+          cloudpickle==0.7.0 \
+          cycler==0.10.0 \
+          dask==1.1.1 \
+          decorator==4.3.2 \
+          kiwisolver==1.0.1 \
+          matplotlib==2.2.3 \
+          networkx==2.2 \
+          pillow==5.4.1 \
+          torchvision==0.2.1
+
+
+pyparsing-2.3.1 python-dateutil-2.8.0 pytz-2018.9 scikit-image-0.14.2 scipy-1.2.0 subprocess32-3.5.3 toolz-0.9.0
+```
+
+Download pre-trained models for evaluation.
+
+```
+        $ mkdir data/ && data/image_weights
+        $ cd data/imagenet_weights
+
+        # pretrained resnet download from
+        # https://drive.google.com/drive/folders/0B7fNdx_jAqhtbVYzOURMdDNHSGM
+        # to data/image_weights
+
+ 	# output of ls should be
+        $ ls data/image_weights
+        resnet101.pth resnet152.pth resnet50.pth
+
+
+        # download pre-trained model for evaluation: no_finetune
+        # https://drive.google.com/drive/folders/0B7fNdx_jAqhtcXp0aFlWSnJmb0k
+        # place the files in data no_finetune
+
+        # output of ls should be
+        $ ls data/no_finetune
+        att2in2 cocotalk.json cocotalk_label.h5 FC topdown
+
+        # download pre-trained model for evaluation: self_critical
+        # https://drive.google.com/drive/folders/0B7fNdx_jAqhtdE1JRXpmeGJudTg
+        # place the files in data/self_critical
+
+        # output of ls should be
+        $ ls data/self_critical
+        att2in2 cocotalk.json cocotalk_label.h5 FC topdown
+
+        # place all the images you'd like to caption into a folder
+        # and store it's path in IMAGE_ROOT
+        $ IMAGE_ROOT = '<path to image root>'
+```
+
+Evaluation
+
+```
+
+        # place 10 images you'd like to caption into a folder
+        # and store its path in IMAGE_ROOT
+        $ IMAGE_ROOT = '<path to image root>'
+
+        # specify path to model
+        $ MODEL='data/self_critical/att2in2/model-best.pth'
+        $ INFOS='data/self_critical/att2in2/infos_a2i2-best.pkl'
+        $ python eval.py --model $MODEL --infos_path $INFOS --image_folder $IMAGE_ROOT --num_images 10
+
+
+        # now a directory is created called 'vis'
+        # which stores the original images and annotated output
+        # you can visualize using a web browser
+        $ cd vis
+ 	$ python -m SimpleHTTPServer
+
+        browse to localhost:8000 to view the results
+
+```
+
+#README from original
+
 # ImageCaptioning.pytorch
 
 This is an image captioning codebase in PyTorch. If you are familiar with neuraltalk2, here are the differences compared to neuraltalk2.
